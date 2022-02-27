@@ -18,49 +18,47 @@ Citizen.CreateThread(function()
 	end
 end)
 
-RegisterNetEvent("RN-drugs:send:notification")
-AddEventHandler("RN-drugs:send:notification", function(notification)
-   SendNotification(notification)
+RegisterNetEvent("RN-drugs:send:notification", function(notification)
+	SendNotification(notification)
 end)
 
 Citizen.CreateThread(function()
 for k, v in pairs(Config.dealer) do
- if Config.BtTarget then
-   exports['bt-target']:AddCircleZone("RN-drugs:dealer".. k, vector3(v.DealerCoords.x, v.DealerCoords.y, 5.2), 1.00, {
-	name="RN-drugs:dealer",
-	debugPoly=Config.WeedDrugDealerZoneDebug,
-	useZ=true,
-	}, {
-		options = {
-			{
-				event = "RN-drugs:drug:dealer",
-				icon = Config.WeedDrugDealerIcon,
-				label = Config.Languages['drug_dealer'],
-			}, 
-		},   
-		job = {"all"},        
-		distance = Config.WeedDealerTargetDistance
-	})
-  elseif Config.qtarget then
-	exports['qtarget']:AddCircleZone("RN-drugs:dealer".. k, vector3(v.DealerCoords.x, v.DealerCoords.y, 5.2), 1.00, {
-		name="RN-drugs:dealer",
-		debugPoly= Config.WeedDrugDealerZoneDebug,
-		useZ=true,
-		options = {
-			{
-				event = "RN-drugs:drug:dealer",
-				icon = Config.WeedDrugDealerIcon,
-				label = Config.Languages['drug_dealer'], 				                             
-			},
-		},  
-		distance = Config.WeedDealerTargetDistance
-      })
+	if Config.BtTarget then
+		exports['bt-target']:AddCircleZone("RN-drugs:dealer".. k, vector3(v.DealerCoords.x, v.DealerCoords.y, 5.2), 1.00, {
+			name="RN-drugs:dealer",
+			debugPoly=Config.WeedDrugDealerZoneDebug,
+			useZ=true,
+		}, {
+			options = {
+				{
+					event = "RN-drugs:drug:dealer",
+					icon = Config.WeedDrugDealerIcon,
+					label = Config.Languages['drug_dealer'],
+				}, 
+			},   
+			job = {"all"},        
+			distance = Config.WeedDealerTargetDistance
+		})
+		elseif Config.qtarget then
+			exports['qtarget']:AddCircleZone("RN-drugs:dealer".. k, vector3(v.DealerCoords.x, v.DealerCoords.y, 5.2), 1.00, {
+				name="RN-drugs:dealer",
+				debugPoly= Config.WeedDrugDealerZoneDebug,
+				useZ=true,
+				options = {
+					{
+						event = "RN-drugs:drug:dealer",
+						icon = Config.WeedDrugDealerIcon,
+						label = Config.Languages['drug_dealer'], 				                             
+					},
+				},  
+				distance = Config.WeedDealerTargetDistance
+			})
+		end
 	end
-  end
 end)
 
-RegisterNetEvent('RN-drugs:npc:dealer')
-AddEventHandler('RN-drugs:npc:dealer',function(coords,heading)
+RegisterNetEvent('RN-drugs:npc:dealer',function(coords,heading)
 	local hash = GetHashKey(Config.DealerPed)
 	if not HasModelLoaded(hash) then
 		RequestModel(hash)
@@ -69,7 +67,6 @@ AddEventHandler('RN-drugs:npc:dealer',function(coords,heading)
 	while not HasModelLoaded(hash) do 
 		Wait(10)
 	end
-
     DrugDealer = true
 	DealerPed = CreatePed(5, hash, coords, heading, false, false)
 	FreezeEntityPosition(DealerPed, true)
@@ -92,11 +89,10 @@ RegisterNetEvent('RN-drugs:drug:dealer', function()
             }
         })
         TriggerEvent('nh-context:sendMenu',Drugs)
-     end    
- end)
+    end    
+end)
 
-RegisterNetEvent('RN-drugs:sell:amount')
-AddEventHandler('RN-drugs:sell:amount', function(data)    
+RegisterNetEvent('RN-drugs:sell:amount', function(data)    
     local keyboard = exports["nh-keyboard"]:KeyboardInput({
         header = Config.Languages['input_amount'], 
         rows = {
@@ -107,6 +103,6 @@ AddEventHandler('RN-drugs:sell:amount', function(data)
         }
     })
     if keyboard ~= nil then		
-	  TriggerServerEvent('RN-drugs:sell',data.name,keyboard[1].input,data.price)
+		TriggerServerEvent('RN-drugs:sell',data.name,keyboard[1].input,data.price)
     end   
 end)  

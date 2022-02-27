@@ -14,9 +14,9 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
- local WeedProp = {`prop_weed_02`}
-  if Config.BtTarget then
-  exports['bt-target']:AddTargetModel(WeedProp, {
+local WeedProp = {`prop_weed_02`}
+if Config.BtTarget then
+exports['bt-target']:AddTargetModel(WeedProp, {
 	options = {
 		{
 			event = "RN-drugs:pick:weed",
@@ -37,12 +37,12 @@ elseif Config.qtarget then
 			},
 		},  
 		distance = Config.WeedTargetDistance
-      })
+    	})
     end
 end)
 Citizen.CreateThread(function()
 	for k, v in pairs(Config.WeedProcessing) do
-	  if Config.BtTarget then
+		if Config.BtTarget then
 		exports['bt-target']:AddCircleZone("Rencik-drugs:process:weed".. k, vector3(v.WeedProcessing.x,v.WeedProcessing.y,v.WeedProcessing.z), 1.00, {
 			name="Rencik-drugs:process:weed",
 			debugPoly= Config.WeedProcessZoneDebug,
@@ -85,7 +85,7 @@ RegisterNetEvent('RN-drugs:process:weed', function()
 	for k, v in pairs(Config.WeedProcessing) do
 	if GetDistanceBetweenCoords(coords, v.WeedProcessing.x,v.WeedProcessing.y,v.WeedProcessing.z, true) < 1 then
 		if not isProcessing then
-		     end		
+		    end		
 				ESX.TriggerServerCallback('RN-drugs:cannabis_count', function(xCannabis)
 					ProcessWeed(xCannabis)
 				end)				
@@ -103,31 +103,31 @@ RegisterNetEvent('RN-drugs:pick:weed', function()
 		end
 		if nearbyObject and IsPedOnFoot(playerPed) then
 			if not isPickingUp then
-			   isPickingUp = true 
+				isPickingUp = true 
 					TaskStartScenarioInPlace(playerPed, 'world_human_gardener_plant', 0, false)
 					exports.rprogress:Custom({
-					   Duration = Config.PickingTime,
-						Label = Config.Languages['Picking_weed_progressbar'],                            
-						DisableControls = {
-							Mouse = false,
-							Player = true,
-							Vehicle = true
-							 }
-							})
-							Wait(Config.PickingTime)                    
-							ClearPedTasksImmediately(playerPed)        
-							isPickingUp = false
-							ESX.Game.DeleteObject(nearbyObject)
+					Duration = Config.PickingTime,
+					Label = Config.Languages['Picking_weed_progressbar'],                            
+					DisableControls = {
+						Mouse = false,
+						Player = true,
+						Vehicle = true
+						}
+						})
+						Wait(Config.PickingTime)                    
+						ClearPedTasksImmediately(playerPed)        
+						isPickingUp = false
+						ESX.Game.DeleteObject(nearbyObject)
 			
-							table.remove(weedPlants, nearbyID)
-							spawnedWeeds = spawnedWeeds - 1
+						table.remove(weedPlants, nearbyID)
+						spawnedWeeds = spawnedWeeds - 1
 			
-							TriggerServerEvent('RN-drugs:pickedUpCannabis')
-						else
-							SendNotification(Config.Languages['weed_picking_full']) 
-						end 			
-					end
-				end)
+						TriggerServerEvent('RN-drugs:pickedUpCannabis')
+					else
+						SendNotification(Config.Languages['weed_picking_full']) 
+					end 			
+				end
+			end)
 
 function ProcessWeed(xCannabis)
 	isProcessing = true
@@ -145,7 +145,7 @@ function ProcessWeed(xCannabis)
 			Vehicle = true
 		}
 	})
-  TriggerServerEvent('RN-drugs:processCannabis')
+	TriggerServerEvent('RN-drugs:processCannabis')
 	if(xCannabis <= 3) then
 		xCannabis = 0
 	end
@@ -251,18 +251,17 @@ end
 
 Citizen.CreateThread(function()	
 	for i=1, #Config.Blips, 1 do
-	  if Config.LocationBlips then
+		if Config.LocationBlips then
 		local blip = AddBlipForCoord(Config.Blips[i].x, Config.Blips[i].y, Config.Blips[i].z)
 		SetBlipSprite (blip, Config.Blips[i].id)
 		SetBlipDisplay(blip, 4)
 		SetBlipColour (blip, Config.Blips[i].color)
 		SetBlipScale (blip, Config.Blips[i].scale)
 		SetBlipAsShortRange(blip, true)
-
 		BeginTextCommandSetBlipName("STRING")
 		AddTextComponentString(Config.Blips[i].name)
 		EndTextCommandSetBlipName(blip)
-	  end
-   end
+		end
+	end
 end)
 
